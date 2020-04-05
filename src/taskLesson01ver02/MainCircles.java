@@ -2,6 +2,8 @@ package taskLesson01ver02;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MainCircles extends JFrame {
     private static final int POS_X = 400;
@@ -24,6 +26,19 @@ public class MainCircles extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setBounds(POS_X, POS_Y, WINDOW_WIDTH, WINDOW_HEIGHT);
         GameCanvas canvas = new GameCanvas(this);
+
+        Background background = new Background(canvas);
+        add(background);
+
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+               if(e.getButton() == 1) {
+                   background.changeColorBackground();
+               }
+            }
+        });
+
         add(canvas, BorderLayout.CENTER);
         setTitle("Circles");
         initApplication();

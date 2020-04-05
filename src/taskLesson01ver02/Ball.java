@@ -47,5 +47,4 @@ public class Ball extends Sprite {
                 (int) getWidth(), (int) getHeight());
     }
 
-
 }

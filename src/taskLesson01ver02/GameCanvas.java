@@ -44,4 +44,8 @@ public class GameCanvas extends JPanel {
     public int getBottom() {
         return getHeight() - 1;
     }
+
+    public long getLastFrameTime() {
+        return lastFrameTime;
+    }
 }
