@@ -1,8 +1,8 @@
-package taskLesson01ver02;
+package taskLesson01ver02.common;
 
 import java.awt.*;
 
-public abstract class Sprite {
+public abstract class Sprite implements GameObject {
     protected float x;
     protected float y;
     protected float halfWidth;
@@ -39,7 +39,10 @@ public abstract class Sprite {
         return 2f * halfHeight;
     }
 
-    void update(GameCanvas canvas, float deltaTime) {}
-    void render(GameCanvas canvas, Graphics g) {}
+    @Override
+    public void update(GameCanvas canvas, float deltaTime) { }
+
+    @Override
+    public void render(GameCanvas canvas, Graphics g) { }
 
 }
