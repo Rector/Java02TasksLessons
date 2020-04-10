@@ -1,58 +1,78 @@
 package taskLesson02;
 
+import java.util.Arrays;
+
 public class WorkWithExceptions {
 
-    private static int SIZE;
-    private static String[][] matrix;
-
-    static {
-        SIZE = 4;
-        matrix = new String[SIZE][SIZE];
+    private static final class RowMismatchException extends RuntimeException {
+        RowMismatchException(String message) {
+            super("Rows exception: " + message);
+        }
     }
 
-    private static String[][] fillingArray(String s) throws ArrayIndexOutOfBoundsException {
-        String[] array = s.split("\n");
-        for (int i = 0; i < matrix.length; i++) {
-            matrix[i] = array[i].split(" ");
+    private static final class ColumnMismatchException extends RuntimeException {
+        ColumnMismatchException(String message) {
+            super("Columns exception: " + message);
         }
-        return matrix;
     }
 
-    private static int sumAndDivisionArrayElements(String[][] array) throws NumberFormatException  {
-        int result = 0;
-
-        for (int i = 0; i < array.length; i++) {
-            for (int j = 0; j < array[i].length; j++) {
-                result += Integer.parseInt(array[i][j]);
-            }
+    private static final class NumberIsNotNumberException extends RuntimeException {
+        NumberIsNotNumberException(String message) {
+            super("Not a number found: " + message);
         }
-        result /= 2;
+    }
+
+    private static final String CORRECT_STRING = "10 3 1 2\n2 3 2 2\n5 6 7 1\n300 3 1 0";
+    private static final String EXTRA_ROW_STRING = "1 3 1 2\n2 3 2 2\n5 6 7 1\n3 3 1 0\n1 2 3 4";
+    private static final String EXTRA_COL_STRING = "1 3 1 2 1\n2 3 2 2 1\n5 6 7 1 1\n3 3 1 0 1";
+    private static final String NO_ROW_STRING = "1 3 1 2\n2 3 2 2\n5 6 7 1";
+    private static final String NO_COL_STRING = "1 3 1 2\n2 3 2 2\n5 6 7 1\n3 3 1";
+    private static final String HAS_CHAR_STRING = "1 3 1 2\n2 3 2 2\n5 6 7 1\n3 3 1 A";
+
+    private static final int MATRIX_ROWS = 4;
+    private static final int MATRIX_COLS = 4;
+
+    private static String[][] stringToMatrix(String value) {
+        String[] rows = value.split("\n");
+        if (rows.length != MATRIX_ROWS)
+            throw new RowMismatchException(rows.length + ":\n" + value);
+
+        String[][] result = new String[MATRIX_ROWS][];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = rows[i].split(" ");
+            if (result[i].length != MATRIX_COLS)
+                throw new ColumnMismatchException(result[i].length + ":\n" + value);
+        }
         return result;
     }
 
-    public static void main(String[] args) {
-//    1. Есть строка вида: "10 3 1 2\n2 3 2 2\n5 6 7 1\n300 3 1 0"; (другими словами матрица 4x4)
-//            10 3 1 2
-//            2 3 2 2
-//            5 6 7 1
-//            300 3 1 0
-//      Написать метод, на вход которого подаётся такая строка, метод должен преобразовать строку в двумерный массив типа String[][];
-//   2. Преобразовать все элементы массива в числа типа int, просуммировать, поделить полученную сумму на 2, и вернуть результат;
-//   3. Ваши методы должны бросить исключения в случаях:
-//      Если размер матрицы, полученной из строки, не равен 4x4;
-//      Если в одной из ячеек полученной матрицы не число; (например символ или слово)
-//   4. В методе main необходимо вызвать полученные методы, обработать возможные исключения и вывести результат расчета.
-//   5. * Написать собственные классы исключений для каждого из случаев              + sumAndDivisionArrayElements(matrix));
-
-
-        try{
-            fillingArray("10 3 1 2\n2 3 2 2\n5 6 7 1\n300 3 1 0");
-            System.out.println("The sum of the elements of the array and dividing the result by two: "
-                    + sumAndDivisionArrayElements(matrix));
-        } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
-            throw new RuntimeException(e);
+    private static float calcMatrix(String[][] matrix) {
+        int result = 0;
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                try {
+                    result += Integer.parseInt(matrix[i][j]);
+                } catch (NumberFormatException e) {
+                    throw new NumberIsNotNumberException(matrix[i][j]);
+                }
+            }
         }
+        return result / 2f;
+    }
 
+    public static void main(String[] args) {
+        try {
+            final String[][] matrix = stringToMatrix(CORRECT_STRING);
+//            final String[][] matrix = stringToMatrix(NO_ROW_STRING);
+//            final String[][] matrix = stringToMatrix(NO_COL_STRING);
+//            final String[][] matrix = stringToMatrix(HAS_CHAR_STRING);
+            System.out.println(Arrays.deepToString(matrix));
+            System.out.println("Half sum = " + calcMatrix(matrix));
+        } catch (NumberIsNotNumberException e) {
+            System.out.println("A NumberFormatException is thrown: " + e.getMessage());
+        } catch (RowMismatchException | ColumnMismatchException e) {
+            System.out.println("A RuntimeException successor is thrown: " + e.getMessage());
+        }
     }
 
 
