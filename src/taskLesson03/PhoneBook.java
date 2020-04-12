@@ -1,28 +1,28 @@
 package taskLesson03;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Map;
 
 public class PhoneBook {
 
-    HashMap<String, HashSet<String>> directory;
+    Map<String, ArrayList<String>> directory;
 
     PhoneBook(){
         this.directory = new HashMap<>();
     }
 
     public void addNewRecord(String surname, String phone){
-        HashSet<String> book = directory.getOrDefault(surname, new HashSet<>());
-        book.add(phone);
-        directory.put(surname, book);
+        ArrayList<String> phoneList = directory.get(surname);
+        if (phoneList == null) {
+            phoneList = new ArrayList<>();
+        }
+        phoneList.add(phone);
+        directory.put(surname, phoneList);
     }
 
     public void findPhone(String surname){
-        System.out.println("Contact: " + surname + " Phone number " + directory.getOrDefault(surname, new HashSet<>()));
-    }
-
-    public void findEmail(){
-
+        System.out.println("Surname: " + surname + " | Phone number: " + directory.getOrDefault(surname, new ArrayList<>()));
     }
 
 }

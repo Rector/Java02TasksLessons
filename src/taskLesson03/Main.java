@@ -15,10 +15,10 @@ public class Main {
 
     private static final String[] alexanderBlok = {"the", "night", "the", "pharmacy", "the", "street", "the", "pointless", "lamppost",
             "in", "the", "mist", "A", "quarter", "century", "recedes",
-            "There", "is", "no", "escape", "It", "all", "persists" };
+            "There", "is", "no", "escape", "It", "all", "persists"};
 
     private static void wordCount(String[] array) {
-        LinkedHashSet<String> text = new LinkedHashSet<>();
+        Set<String> text = new LinkedHashSet<>();
         for (int i = 0; i < array.length; i++) {
             text.add(array[i]);
         }
@@ -26,7 +26,7 @@ public class Main {
     }
 
     private static void counterWords(String[] array) {
-        HashMap<String, Integer> counter = new HashMap<>();
+        Map<String, Integer> counter = new HashMap<>();
         for (int i = 0; i < array.length; i++) {
             counter.put(array[i], counter.getOrDefault(array[i], 0) + 1);
         }
@@ -45,7 +45,7 @@ public class Main {
         phoneBook.addNewRecord("Shchelokov", "89178595043");
         phoneBook.addNewRecord("Liberman", "89277462431");
         phoneBook.addNewRecord("Shchelokov", "89324672856");
-        phoneBook.addNewRecord("Dolotov","89178000000");
+        phoneBook.addNewRecord("Dolotov", "89178000000");
 
         phoneBook.findPhone("Liberman");
         phoneBook.findPhone("Shchelokov");
@@ -58,7 +58,5 @@ public class Main {
 //        "sormik@yandex.ru", "89324672856"
 //        "Dolotov", "darivik@mail.ru", "89178000000"
 
-
     }
-
 }
