@@ -17,6 +17,7 @@ public class Main {
             "in", "the", "mist", "A", "quarter", "century", "recedes",
             "There", "is", "no", "escape", "It", "all", "persists"};
 
+// первый способ выполнения
     private static void wordCount(String[] array) {
         Set<String> text = new LinkedHashSet<>();
         for (int i = 0; i < array.length; i++) {
@@ -25,6 +26,12 @@ public class Main {
         System.out.println(text);
     }
 
+// второй способ выполнения
+    private static TreeSet<String> getWords(String[] arr) {
+        return new TreeSet<>(Arrays.asList(arr));
+    }
+
+// первый способ выполнения
     private static void counterWords(String[] array) {
         Map<String, Integer> counter = new HashMap<>();
         for (int i = 0; i < array.length; i++) {
@@ -33,30 +40,42 @@ public class Main {
         System.out.println(counter);
     }
 
+// второй способ выполнения
+    private static HashMap<String, Integer> getWordsCount(String[] arr) {
+        HashMap<String, Integer> map = new HashMap<>();
+        for (int i = 0; i < arr.length; i++) {
+            String word = arr[i];
+            if (map.containsKey(word)) {
+                map.put(word, map.get(word) + 1);
+            } else {
+                map.put(word, 1);
+            }
+        }
+        return map;
+    }
+
     public static void main(String[] args) {
 
         wordCount(alexanderBlok);
+        System.out.println(getWords(alexanderBlok));
 
         counterWords(alexanderBlok);
+        System.out.println(getWordsCount(alexanderBlok));
 
-        PhoneBook phoneBook = new PhoneBook();
+        Phonebook phonebook = new Phonebook();
 
-        phoneBook.addNewRecord("Liberman", "89033794581");
-        phoneBook.addNewRecord("Shchelokov", "89178595043");
-        phoneBook.addNewRecord("Liberman", "89277462431");
-        phoneBook.addNewRecord("Shchelokov", "89324672856");
-        phoneBook.addNewRecord("Dolotov", "89178000000");
-
-        phoneBook.findPhone("Liberman");
-        phoneBook.findPhone("Shchelokov");
-        phoneBook.findPhone("Dolotov");
+        phonebook.add("Liberman", "89033794581", "luk53@gmail.com");
+        phonebook.add("Shchelokov", "89178595043", "shcel@mail.ru");
+        phonebook.add("Liberman", "89277462431", "surikov42@gmail.com");
+        phonebook.add("Shchelokov", "89324672856", "sormik@yandex.ru");
+        phonebook.add("Dolotov", "89178000000", "darivik@mail.ru");
 
 
-//        "Liberman", "luk53@gmail.com", "89033794581"
-//        "Shchelokov", "shcel@mail.ru", "89178595043"
-//        "surikov42@gmail.com", "89277462431"
-//        "sormik@yandex.ru", "89324672856"
-//        "Dolotov", "darivik@mail.ru", "89178000000"
-
+        System.out.println("e-mail Liberman: " + phonebook.getMails("Liberman"));
+        System.out.println("e-mail Shchelokov: " + phonebook.getMails("Shchelokov"));
+        System.out.println("phone Liberman: " + phonebook.getPhones("Liberman"));
+        System.out.println("phone Shchelokov: " + phonebook.getPhones("Shchelokov"));
+        System.out.println("phone Dolotov: " + phonebook.getPhones("Dolotov"));
+        System.out.println("e-mail Dolotov: " + phonebook.getMails("Dolotov"));
     }
 }
