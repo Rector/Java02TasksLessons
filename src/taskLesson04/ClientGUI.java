@@ -4,8 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public class ClientGUI extends JFrame implements ActionListener, Thread.UncaughtExceptionHandler {
+
+public class ClientGUI extends JFrame implements ActionListener, Thread.UncaughtExceptionHandler, KeyListener  {
     private static final int WIDTH = 400;
     private static final int HEIGHT = 300;
 
@@ -18,6 +21,9 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
     private final JPasswordField tfPassword = new JPasswordField("123");
     private final JButton btnLogin = new JButton("Login");
 
+    private final Button btnEnter = new Button();
+    int n = KeyEvent.VK_ENTER;
+
     private final JPanel panelBottom = new JPanel(new BorderLayout());
     private final JButton btnDisconnect = new JButton("<html><b>Disconnect</b></html>");
     private final JTextField tfMessage = new JTextField();
@@ -26,6 +32,8 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
     private final JList<String> userList = new JList<>();
 
     public static void main(String[] args) {
+
+
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -51,6 +59,11 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         log.setEditable(false);
         cbAlwaysOnTop.addActionListener(this);
 
+        btnSend.addActionListener(this);
+
+//        btnEnter.
+        addKeyListener(this);
+
         panelTop.add(tfIPAddress);
         panelTop.add(tfPort);
         panelTop.add(cbAlwaysOnTop);
@@ -68,12 +81,48 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         setVisible(true);
     }
 
+//    @Override
+//    public synchronized void addKeyListener(KeyListener l) {
+//        l.keyPressed(KeyEvent);
+//    }
+
+    //    @Override
+//    public synchronized void addKeyListener(KeyListener l) {
+//        Object s = l.keyPressed(VK);
+//        l.keyPressed(KeyEvent k);
+//        k.getKey
+//        if (k.getKeyCode() == KeyEvent.VK_ENTER)
+//    }
+
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        int n = KeyEvent.VK_ENTER;
+        if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+//            log.append(tfMessage.getText() + "\n");
+            log.append("hsfgj");
+        }
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         Object src = e.getSource();
+
         if (src == cbAlwaysOnTop) {
             setAlwaysOnTop(cbAlwaysOnTop.isSelected());
-        } else {
+        } else if(src == btnSend) {
+            log.append(tfMessage.getText() + "\n");
+        } else{
             throw new RuntimeException("Unknown source:" + src);
         }
     }
@@ -88,4 +137,7 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         JOptionPane.showMessageDialog(this, msg, "Exception", JOptionPane.ERROR_MESSAGE);
         System.exit(1);
     }
+
+
+
 }
