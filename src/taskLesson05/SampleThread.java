@@ -1,7 +1,5 @@
 package taskLesson05;
 
-import java.util.Arrays;
-
 public class SampleThread extends Thread {
 
     final int SIZE = 10_000_000;
