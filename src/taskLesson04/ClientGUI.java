@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileWriter;
+import java.io.IOException;
+
 
 public class ClientGUI extends JFrame implements ActionListener, Thread.UncaughtExceptionHandler {
 
@@ -15,7 +18,7 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
     private final JTextField tfIPAddress = new JTextField("127.0.0.1");
     private final JTextField tfPort = new JTextField("8189");
     private final JCheckBox cbAlwaysOnTop = new JCheckBox("Always on top", true);
-    private final JTextField tfLogin = new JTextField("ivan");
+    private final JTextField tfLogin = new JTextField("kirill");
     private final JPasswordField tfPassword = new JPasswordField("123");
     private final JButton btnLogin = new JButton("Login");
 
@@ -27,6 +30,10 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
     private final JList<String> userList = new JList<>();
 
     public static void main(String[] args) {
+
+//    Отправлять сообщения в лог по нажатию кнопки или по нажатию клавиши Enter.
+//    Создать лог в файле (показать комментарием, где и как Вы планируете писать сообщение в файловый журнал).
+
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -52,6 +59,9 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         log.setEditable(false);
         cbAlwaysOnTop.addActionListener(this);
 
+        tfMessage.addActionListener(this);
+        btnSend.addActionListener(this);
+
         panelTop.add(tfIPAddress);
         panelTop.add(tfPort);
         panelTop.add(cbAlwaysOnTop);
@@ -74,8 +84,58 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         Object src = e.getSource();
         if (src == cbAlwaysOnTop) {
             setAlwaysOnTop(cbAlwaysOnTop.isSelected());
+        } else if (src == btnSend || src == tfMessage) {
+            sendMessage();
+//  Мой вариант
+//  log.append(tfMessage.getText() + "\n");
         } else {
             throw new RuntimeException("Unknown source:" + src);
+        }
+    }
+
+    private void sendMessage(){
+        String msg = tfMessage.getText();
+        String username = tfLogin.getText();
+        if("".equals(msg)){
+            return;
+        }
+        tfMessage.setText(null);
+        tfMessage.requestFocusInWindow();
+        putLog(String.format("%s: %s", username, msg));
+        wrtMsgToLogFile(msg, username);
+    }
+
+    private void wrtMsgToLogFile(String msg, String username){
+        try(FileWriter out = new FileWriter("log.txt", true)){
+            out.write(username + ": " + msg + System.lineSeparator());
+            out.flush();
+        } catch (IOException e){
+            showException(Thread.currentThread(), e);
+        }
+    }
+
+    private void putLog(String msg){
+        if("".equals(msg)){
+            return;
+        }
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                log.append(msg + System.lineSeparator());
+                log.setCaretPosition(log.getDocument().getLength());
+            }
+        });
+    }
+
+    private void showException(Thread t, Throwable e){
+        String msg;
+        StackTraceElement[] ste = e.getStackTrace();
+        if(ste.length == 0){
+            msg = "Empty Stacktrace";
+        } else{
+            msg = String.format("Exception in \"%s\" %s: %s\n\tat %s",
+                    t.getName(), e.getClass().getCanonicalName(), e.getMessage(), ste[0]);
+            JOptionPane.showMessageDialog(this, msg, "Exception", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -89,4 +149,5 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         JOptionPane.showMessageDialog(this, msg, "Exception", JOptionPane.ERROR_MESSAGE);
         System.exit(1);
     }
+
 }
