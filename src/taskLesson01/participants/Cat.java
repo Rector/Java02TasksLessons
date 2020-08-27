@@ -1,8 +1,9 @@
 package taskLesson01.participants;
 
-import taskLesson01.Main;
 
-public class Cat extends Participants implements Main.RunAndJump {
+import taskLesson01.RunAndJump;
+
+public class Cat extends Participants implements RunAndJump {
 
     public Cat(String name, int limitRun, double limitJump) {
         super(name, limitRun, limitJump);

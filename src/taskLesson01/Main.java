@@ -16,11 +16,7 @@ public class Main {
 //   4.* У препятствий есть длина (для дорожки) или высота (для стены), а участников ограничения на бег и прыжки.
 //   Если участник не смог пройти одно из препятствий, то дальше по списку он препятствий не идет.
 //
-    public interface RunAndJump {
-        void run();
 
-        void jump();
-    }
 
     public static void main(String[] args) {
 
@@ -35,7 +31,10 @@ public class Main {
         r2D2.run();
         r2D2.jump();
 
-        Participants[] team = {new Human("Luk Skywalker", 200, 2.5), new Cat("Chewbacca", 100, 3.0), new Robot("R2-D2", 300, 0.5)};
+        Participants[] team = {new Human("Luk Skywalker", 200, 2.5),
+                new Cat("Chewbacca", 100, 3.0),
+                new Robot("R2-D2", 300, 0.5)};
+
         Obstacles[] obst = {new Treadmill(150), new Wall(2.0)};
 
         for (int i = 0; i < obst.length; i++) {

@@ -1,8 +1,8 @@
 package taskLesson01.participants;
 
-import taskLesson01.Main;
+import taskLesson01.RunAndJump;
 
-public class Robot extends Participants implements Main.RunAndJump {
+public class Robot extends Participants implements RunAndJump {
 
     public Robot(String name, int limitRun, double limitJump) {
         super(name, limitRun, limitJump);

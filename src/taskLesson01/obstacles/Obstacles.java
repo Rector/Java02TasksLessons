@@ -1,4 +1,4 @@
 package taskLesson01.obstacles;
 
-public class Obstacles {
+public abstract class Obstacles {
 }

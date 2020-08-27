@@ -1,8 +1,8 @@
 package taskLesson01.participants;
 
-import taskLesson01.Main;
+import taskLesson01.RunAndJump;
 
-public class Human extends Participants implements Main.RunAndJump {
+public class Human extends Participants implements RunAndJump {
 
 
     public Human(String name, int limitRun, double limitJump) {
